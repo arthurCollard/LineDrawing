@@ -1,8 +1,7 @@
+/* written by A.J. Collard */
+
 import java.util.*;
 import java.io.*;
-
-
-
 import java.awt.Canvas;
 import java.awt.Graphics;			//https://books.trinket.io/thinkjava/appendix-b.html
 import javax.swing.JFrame;			//AWT package handles window creation to draw in.
