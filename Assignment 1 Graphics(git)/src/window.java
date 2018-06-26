@@ -7,4 +7,8 @@ public class window extends Frame {
 		setLayout(null);	//no layout manager  
 		setVisible(true);	//now frame will be visible, by default not visible 
 	}
+	
+	public void putPixel(int x,int y) {
+		.fillRect(x,y,1,1);
+	}
 }
