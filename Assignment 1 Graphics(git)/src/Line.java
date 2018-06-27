@@ -16,25 +16,25 @@ public class Line extends Applet{
 		
 		/* Prompts the user for number of lines and which algorithm to use */
 		System.out.println("Please enter how many lines to draw.");
-		//Scanner in = new Scanner(System.in);
-		int lines = 1;//in.nextInt();
+		Scanner in = new Scanner(System.in);
+		int lines = in.nextInt();
 		System.out.println("Enter which algorithm to use:0 for basic line drawing or 1 for Bresenham's" );
-		int alg = 0;//in.nextInt();
+		int alg = in.nextInt();
 		
 		//instantiate needed objects
 		Graphics2D g2d = (Graphics2D) g;
 		Random rand = new Random();
 		
 		for(int i=0; i < lines; i++) {
-			//int x0 = rand.nextInt(1000); /* generate random ints inside window size */
-			/*int x1 = rand.nextInt(1000);
+			int x0 = rand.nextInt(1000); /* generate random ints inside window size */
+			int x1 = rand.nextInt(1000);
 			int y0 = rand.nextInt(1000);
-			int y1 = rand.nextInt(1000);*/
+			int y1 = rand.nextInt(1000);
 
-			int x0 = 500;
+		/*	int x0 = 500;
 			int x1 = 700;
 			int y0 = 500;
-			int y1 = 701;
+			int y1 = 900;	*/
 			
 			int deltax = Math.abs(x1-x0);
 			int deltay = Math.abs(y1-y0);
@@ -176,48 +176,41 @@ public class Line extends Applet{
 	}//basicline1 - working
 	
 	public static void basicLine2(int x0, int x1, int y0, int y1, Graphics g) {
-		float absdeltay = Math.abs(y1-y0);				//traverse over y
+		float absdeltay = Math.abs(y1-y0);				//use for traversal
 		float deltax = (x1-x0);
 		float deltay = (y1-y0);
-		float slope = deltay / deltax;
-		int x, y;
+		float slope = deltax / deltay;					// m in y=mx+b
+		int x, y;	
 		float try_x;
-		System.out.println("Line 2: Deltax: " + deltax + ", Deltay: " + deltay + ", slope: "+ slope);
 		if ((x1 > x0) && (y1 > y0)) {
-			System.out.println("here0");
 			for(int i=0; i < absdeltay; i++) {
 				y = y0 + i;
 				try_x = slope*i + x0;
 				x = Math.round(try_x);
-				g.fillRect(y,x,1,1);
-			}
-		} else if ((x0 > x1) && (y1 > y0)) {
-			System.out.println("here1");
-			for(int i=0; i < absdeltay; i++) {
-				x = x0 - i;
-				try_x = slope*i + y1;
-				y = Math.round(try_x);
-				System.out.println("x: " + x + " y: "+ y);
 				g.fillRect(x,y,1,1);
 			}
-		} else if ((x1 > x0) && (y0 > y1)) {			//case is working
-			System.out.println("here2");
+		} else if ((x0 > x1) && (y1 > y0)) {
 			for(int i=0; i < absdeltay; i++) {
-				x = x0 + i;
-				try_x = slope*i + y0;
-				y = Math.round(try_x);
-				g.fillRect(y,x,1,1);
+				y = y0 + i;
+				try_x = slope*i + x0;
+				x = Math.round(try_x);
+				g.fillRect(x,y,1,1);
+			}
+		} else if ((x1 > x0) && (y0 > y1)) {
+			for(int i=0; i < absdeltay; i++) {
+				y = y0 - i;
+				try_x = -slope*i + x0;
+				x = Math.round(try_x);
+				g.fillRect(x,y,1,1);
 			}
 		} else if ((x0 > x1) && (y0 > y1)){
-			System.out.println("here3");
 			for(int i=0; i < absdeltay; i++) {
-				x = x0 - i;
-				try_x = -slope*i + y0;
-				y = Math.round(try_x);
-				g.fillRect(y,x,1,1);
-				System.out.println("x: " + x + " y: " + y);
+				y = y0 - i;
+				try_x = -slope*i + x0;
+				x = Math.round(try_x);
+				g.fillRect(x,y,1,1);
 			}
-		}
+		}//else if
 	}
 	
 	public static void Bresenham1(int x0, int x1, int y0, int y1) {  //Deltax > Deltay
