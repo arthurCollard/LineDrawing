@@ -20,9 +20,9 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 		/* Prompts the user for number of lines and which algorithm to use */
 		System.out.println("Please enter how many lines to draw.");
 		Scanner in = new Scanner(System.in);
-		int lines = in.nextInt();
+		int lines = 10000;//in.nextInt();
 		System.out.println("Enter which algorithm to use:0 for basic line drawing or 1 for Bresenham's" );
-		int alg = in.nextInt();
+		int alg = 1;//in.nextInt();
 		
 		//instantiate needed objects
 		Graphics2D g2d = (Graphics2D) g;
@@ -34,10 +34,7 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 			int y0 = rand.nextInt(1000);
 			int y1 = rand.nextInt(1000);
 
-		/*	int x0 = 700;
-			int x1 = 500;
-			int y0 = 900;
-			int y1 = 500; */
+
 
 			
 			int deltax = Math.abs(x1-x0);		//Change in x that determines method to call
@@ -258,7 +255,6 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 					break;
 				} else {
 					continue;
-					
 				}
 			}//while
 		} else if ((x0 > x1) && (y1 > y0)){				//case3
@@ -308,7 +304,7 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 		inc2 = 2*(deltaY)-deltaX;
 		x = x0;
 		y = y0;
-		if ((x1 > x0) && (y1 > y0)) { 
+		if ((x1 > x0) && (y1 > y0)) { 					//case1
 			while (true) {
 				g.fillRect(x, y, 1, 1);
 				if (e < 0) {
@@ -317,14 +313,14 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 					x = x + 1;
 					e = e - inc2;
 				}
-				y = y - 1;
+				y = y + 1;
 				if (y > y1) {
 					break;
 				} else {
 					continue;
 				}
 			}//while
-		} else if((x1 > x0) && (y0 > y1)) {
+		} else if((x1 > x0) && (y0 > y1)) {				//case2
 			y=y1;
 			while (true) {
 				g.fillRect(x, y, 1, 1);
@@ -339,10 +335,9 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 					break;
 				} else {
 					continue;
-					
 				}
 			}//while
-		} else if ((x0 > x1) && (y1 > y0)){
+		} else if ((x0 > x1) && (y1 > y0)){				//case3
 			x = x0;
 			while (true) {
 				g.fillRect(x, y, 1, 1);
@@ -359,7 +354,7 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 					continue;
 				}
 			}//while
-		} else {
+		} else {										//case4
 			x = x0;
 			y = y0;
 			while (true) {
