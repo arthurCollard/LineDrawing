@@ -20,24 +20,24 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 		/* Prompts the user for number of lines and which algorithm to use */
 		System.out.println("Please enter how many lines to draw.");
 		Scanner in = new Scanner(System.in);
-		int lines = 1; //in.nextInt();
+		int lines = in.nextInt();
 		System.out.println("Enter which algorithm to use:0 for basic line drawing or 1 for Bresenham's" );
-		int alg = 1; //in.nextInt();
+		int alg = in.nextInt();
 		
 		//instantiate needed objects
 		Graphics2D g2d = (Graphics2D) g;
 		Random rand = new Random();
 		
 		for(int i=0; i < lines; i++) {
-			/*int x0 = rand.nextInt(1000);  	//generate random ints inside window size 
+			int x0 = rand.nextInt(1000);  	//generate random ints inside window size 
 			int x1 = rand.nextInt(1000);
 			int y0 = rand.nextInt(1000);
-			int y1 = rand.nextInt(1000);*/
+			int y1 = rand.nextInt(1000);
 
-			int x0 = 500;
-			int x1 = 700;
-			int y0 = 500;
-			int y1 = 900;
+		/*	int x0 = 700;
+			int x1 = 500;
+			int y0 = 900;
+			int y1 = 500; */
 
 			
 			int deltax = Math.abs(x1-x0);		//Change in x that determines method to call
@@ -61,6 +61,7 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 				basicLine2(x0,x1,y0,y1,g);
 			}//else if
 		}//for	
+		System.out.println("im done");
 	}//paint
 	
 	
@@ -302,9 +303,9 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 		int e, deltaY, deltaX, inc1, inc2, x, y;
 		deltaY = y1 - y0;
 		deltaX = x1 - x0;
-		e = (2*deltaY) - deltaX;
+		e = (2*deltaX) - deltaY;
 		inc1 = 2*deltaY;
-		inc2 = 2*(deltaY-deltaX);
+		inc2 = 2*(deltaY)-deltaX;
 		x = x0;
 		y = y0;
 		if ((x1 > x0) && (y1 > y0)) { 
@@ -313,29 +314,28 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 				if (e < 0) {
 					e = e + inc1;
 				} else {
-					y = y + 1;
-					e = e + inc2;
+					x = x + 1;
+					e = e - inc2;
 				}
-				x = x + 1;
-				if (x > x1) {
+				y = y - 1;
+				if (y > y1) {
 					break;
 				} else {
 					continue;
 				}
 			}//while
 		} else if((x1 > x0) && (y0 > y1)) {
-			y=y0;
+			y=y1;
 			while (true) {
 				g.fillRect(x, y, 1, 1);
-				System.out.println("E: " + e + " inc1: "+ inc1 + " inc2: " + inc2);
 				if (e < 0) {
 					e = e - inc1;
 				} else {
-					y = y - 1;
+					x = x + 1;
 					e = e + inc2;
 				}
-				x = x + 1;
-				if (x > x1) {
+				y = y + 1;
+				if (y > y0) {
 					break;
 				} else {
 					continue;
@@ -343,37 +343,35 @@ public class Line extends Applet{				// idea for Applet - https://www.youtube.co
 				}
 			}//while
 		} else if ((x0 > x1) && (y1 > y0)){
-			x = x1;
+			x = x0;
 			while (true) {
 				g.fillRect(x, y, 1, 1);
-				System.out.println("E: " + e + " inc1: "+ inc1 + " inc2: " + inc2);
 				if (e < 0) {
 					e = e + inc1;
 				} else {
-					y = y + 1;
+					x = x - 1;
 					e = e - inc2;
 				}
-				x = x + 1;
-				if (x > x0) {
+				y = y + 1;
+				if (y > y1) {
 					break;
 				} else {
 					continue;
 				}
 			}//while
 		} else {
-			x = x1;
-			y = y1;
+			x = x0;
+			y = y0;
 			while (true) {
 				g.fillRect(x, y, 1, 1);
-				System.out.println("E: " + e + " inc1: "+ inc1 + " inc2: " + inc2);
 				if (e < 0) {
 					e = e - inc1;
 				} else {
-					y = y - 1;
-					e = e - inc2;
+					x = x - 1;
+					e = e + inc2;
 				}
-				x = x + 1;
-				if (x > x0) {
+				y = y - 1;
+				if (y < y1) {
 					break;
 				} else {
 					continue;
