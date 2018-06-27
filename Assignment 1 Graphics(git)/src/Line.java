@@ -16,22 +16,25 @@ public class Line extends Applet{
 		
 		/* Prompts the user for number of lines and which algorithm to use */
 		System.out.println("Please enter how many lines to draw.");
-		Scanner in = new Scanner(System.in);
-		int lines = in.nextInt();
+		//Scanner in = new Scanner(System.in);
+		int lines = 1;//in.nextInt();
 		System.out.println("Enter which algorithm to use:0 for basic line drawing or 1 for Bresenham's" );
-		int alg = in.nextInt();
+		int alg = 0;//in.nextInt();
 		
 		//instantiate needed objects
 		Graphics2D g2d = (Graphics2D) g;
 		Random rand = new Random();
 		
 		for(int i=0; i < lines; i++) {
-			int x0 = rand.nextInt(1000); /* generate random ints inside window size */
-			int x1 = rand.nextInt(1000);
+			//int x0 = rand.nextInt(1000); /* generate random ints inside window size */
+			/*int x1 = rand.nextInt(1000);
 			int y0 = rand.nextInt(1000);
-			int y1 = rand.nextInt(1000);
+			int y1 = rand.nextInt(1000);*/
 
-
+			int x0 = 500;
+			int x1 = 700;
+			int y0 = 500;
+			int y1 = 701;
 			
 			int deltax = Math.abs(x1-x0);
 			int deltay = Math.abs(y1-y0);
@@ -58,25 +61,26 @@ public class Line extends Applet{
 	
 	//fillRect(x,y,1,1) equivalent to putPixel()
 	
-	public static void vertical(int x0, int x1, int y0, int y1, Graphics g) {
-		int deltay = Math.abs(y1-y0);
+	public static void vertical(int x0, int x1, int y0, int y1, Graphics g) {		
+		int deltay = Math.abs(y1-y0); 				// gets the difference y0 and y1
 		int y;
-		if (y1 > y0) {
+		if (y1 > y0) {								//two cases for vertical lines
 			y=y0;
-			for(int i=0; i < deltay; i++) {
+			for(int i=0; i < deltay; i++) {			//loops over y
 				g.fillRect(x0, y, 1, 1); 			//acts as putpixel
 				y++;
 			}//for
-		} else {
-			y = y0;
+		} else {									// second case y0 > y1
+			y = y1;
 			for(int i=0; i < deltay; i++) {
 				g.fillRect(x0, y, 1, 1);
+				y++;
 			}
 		}
-	}//vertical
+	}//vertical - working
 	
 	public static void horizontal(int x0, int x1, int y0, int y1, Graphics g) {
-		int deltax = Math.abs(x1-x0);
+		int deltax = Math.abs(x1-x0);				//gets difference in x
 		int x;
 		if (x1 > x0) {
 			x = x0;
@@ -91,8 +95,7 @@ public class Line extends Applet{
 				x--;
 			}
 		}
-		
-	}
+	}//horizontal - working
 	
 	public static void fourtyfive(int x0, int x1, int y0, int y1, Graphics g) {
 		int deltax = Math.abs(x1-x0);
@@ -128,20 +131,19 @@ public class Line extends Applet{
 				g.fillRect(x, y, 1, 1);
 				x--;
 				y++;
+				//System.out.println("x: " + x + " y: " + y); //to test the values
 			}//for
 		}//else
 	}
 	
 	public static void basicLine1(int x0, int x1, int y0, int y1, Graphics g) {
-		float absdeltax = Math.abs(x1-x0);
+		float absdeltax = Math.abs(x1-x0);				//use for traversal
 		float deltax = (x1-x0);
 		float deltay = (y1-y0);
-		float slope = deltay / deltax;
+		float slope = deltay / deltax;					// m in y=mx+b
 		int x, y;
-		float try_y;
-		System.out.println("Line 1: Deltax: " + deltax + ", Deltay: " + deltay + ", slope: "+ slope);
+		float try_y;									
 		if ((x1 > x0) && (y1 > y0)) {
-			//System.out.println("here0");
 			for(int i=0; i < absdeltax; i++) {
 				x = x0 + i;
 				try_y = slope*i + y0;
@@ -149,57 +151,52 @@ public class Line extends Applet{
 				g.fillRect(x,y,1,1);
 			}
 		} else if ((x0 > x1) && (y1 > y0)) {
-			//System.out.println("here1");
 			for(int i=0; i < absdeltax; i++) {
 				x = x0 - i;
-				try_y = slope*i + y1;
+				try_y = -slope*i + y0;
 				y = Math.round(try_y);
-				System.out.println("x: " + x + " y: "+ y);
 				g.fillRect(x,y,1,1);
 			}
-		} else if ((x1 > x0) && (y0 > y1)) {			//case is working
-			//System.out.println("here2");
+		} else if ((x1 > x0) && (y0 > y1)) {
 			for(int i=0; i < absdeltax; i++) {
 				x = x0 + i;
 				try_y = slope*i + y0;
 				y = Math.round(try_y);
+				
 				g.fillRect(x,y,1,1);
 			}
 		} else if ((x0 > x1) && (y0 > y1)){
-			//System.out.println("here3");
 			for(int i=0; i < absdeltax; i++) {
 				x = x0 - i;
-				//System.out.println(x);
-				try_y = slope*i + y1;
+				try_y = -slope*i + y0;
 				y = Math.round(try_y);
-				//System.out.println(y);
 				g.fillRect(x,y,1,1);
 			}
-		}
-	}
+		}//else if
+	}//basicline1 - working
 	
 	public static void basicLine2(int x0, int x1, int y0, int y1, Graphics g) {
-		float absdeltay = Math.abs(y1-y0);
+		float absdeltay = Math.abs(y1-y0);				//traverse over y
 		float deltax = (x1-x0);
 		float deltay = (y1-y0);
 		float slope = deltay / deltax;
 		int x, y;
-		float try_y;
+		float try_x;
 		System.out.println("Line 2: Deltax: " + deltax + ", Deltay: " + deltay + ", slope: "+ slope);
 		if ((x1 > x0) && (y1 > y0)) {
 			System.out.println("here0");
 			for(int i=0; i < absdeltay; i++) {
-				x = x0 + i;
-				try_y = slope*i + y0;
-				y = Math.round(try_y);
+				y = y0 + i;
+				try_x = slope*i + x0;
+				x = Math.round(try_x);
 				g.fillRect(y,x,1,1);
 			}
 		} else if ((x0 > x1) && (y1 > y0)) {
 			System.out.println("here1");
 			for(int i=0; i < absdeltay; i++) {
 				x = x0 - i;
-				try_y = slope*i + y1;
-				y = Math.round(try_y);
+				try_x = slope*i + y1;
+				y = Math.round(try_x);
 				System.out.println("x: " + x + " y: "+ y);
 				g.fillRect(x,y,1,1);
 			}
@@ -207,19 +204,18 @@ public class Line extends Applet{
 			System.out.println("here2");
 			for(int i=0; i < absdeltay; i++) {
 				x = x0 + i;
-				try_y = slope*i + y0;
-				y = Math.round(try_y);
+				try_x = slope*i + y0;
+				y = Math.round(try_x);
 				g.fillRect(y,x,1,1);
 			}
 		} else if ((x0 > x1) && (y0 > y1)){
 			System.out.println("here3");
 			for(int i=0; i < absdeltay; i++) {
 				x = x0 - i;
-				//System.out.println(x);
-				try_y = slope*i + y1;
-				y = Math.round(try_y);
-				//System.out.println(y);
+				try_x = -slope*i + y0;
+				y = Math.round(try_x);
 				g.fillRect(y,x,1,1);
+				System.out.println("x: " + x + " y: " + y);
 			}
 		}
 	}
