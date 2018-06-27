@@ -2,39 +2,37 @@
 
 import java.util.*;
 import java.io.*;
-import java.applet.*;
-import java.awt.Canvas;				//AWT package handles window creation to draw in.
+import java.applet.*;				//Applet package handles window creation to draw in.
 import java.awt.Graphics;			//https://books.trinket.io/thinkjava/appendix-b.html
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import javax.swing.*;					
+import java.awt.Graphics2D;		
 
 
-public class Line extends Applet{
+public class Line extends Applet{				// idea for Applet - https://www.youtube.com/watch?v=xXnd5ClFLXk
 	
 	public void paint(Graphics g) {
 		
 		/* Prompts the user for number of lines and which algorithm to use */
 		System.out.println("Please enter how many lines to draw.");
 		Scanner in = new Scanner(System.in);
-		int lines = in.nextInt();
+		int lines = 1; //in.nextInt();
 		System.out.println("Enter which algorithm to use:0 for basic line drawing or 1 for Bresenham's" );
-		int alg = in.nextInt();
+		int alg = 1; //in.nextInt();
 		
 		//instantiate needed objects
 		Graphics2D g2d = (Graphics2D) g;
 		Random rand = new Random();
 		
 		for(int i=0; i < lines; i++) {
-			int x0 = rand.nextInt(1000); /* generate random ints inside window size */
+			/*int x0 = rand.nextInt(1000);  //generate random ints inside window size 
 			int x1 = rand.nextInt(1000);
 			int y0 = rand.nextInt(1000);
-			int y1 = rand.nextInt(1000);
+			int y1 = rand.nextInt(1000);*/
 
-		/*	int x0 = 500;
+			int x0 = 500;
 			int x1 = 700;
 			int y0 = 500;
-			int y1 = 900;	*/
+			int y1 = 900;
+
 			
 			int deltax = Math.abs(x1-x0);
 			int deltay = Math.abs(y1-y0);
@@ -47,16 +45,16 @@ public class Line extends Applet{
 			} else if ((deltax) == (deltay)) {
 				fourtyfive(x0,x1,y0,y1,g);
 			} else if (((deltax) > (deltay)) && (alg == 1)) {
-				Bresenham1(x0,x1,y0,y1);
+				Bresenham1(x0,x1,y0,y1,g);
 			} else if (((deltay) > (deltax)) && (alg == 1)) {
-				Bresenham2(x0,x1,y0,y1);
+				Bresenham2(x0,x1,y0,y1,g);
 			} else if (((deltax) > (deltay)) && (alg == 0)) {
 				basicLine1(x0,x1,y0,y1,g);
 			} else if (((deltay) > (deltax)) && (alg == 0)) {
 				basicLine2(x0,x1,y0,y1,g);
 			}
 		}//for	
-	}
+	}//paint
 	
 	
 	//fillRect(x,y,1,1) equivalent to putPixel()
@@ -213,25 +211,168 @@ public class Line extends Applet{
 		}//else if
 	}
 	
-	public static void Bresenham1(int x0, int x1, int y0, int y1) {  //Deltax > Deltay
+	public static void Bresenham1(int x0, int x1, int y0, int y1, Graphics g) {  //Deltax > Deltay
 		int e, deltaY, deltaX, inc1, inc2, x, y;
 		deltaY = y1 - y0;
 		deltaX = x1 - x0;
-		e = (2*deltaY) + deltaX;
+		e = (2*deltaY) - deltaX;
 		inc1 = 2*deltaY;
-		inc2 = 2*deltaX;
+		inc2 = 2*(deltaY-deltaX);
 		x = x0;
 		y = y0;
-		boolean loopctrl = true;
-		
-		while (loopctrl) {
-			
-		}//while
-		
+		if ((x1 > x0) && (y1 > y0)) { 
+			while (true) {
+				g.fillRect(x, y, 1, 1);
+				if (e < 0) {
+					e = e + inc1;
+				} else {
+					y = y + 1;
+					e = e + inc2;
+				}
+				x = x + 1;
+				if (x > x1) {
+					break;
+				} else {
+					continue;
+				}
+			}//while
+		} else if((x1 > x0) && (y0 > y1)) {
+			y=y0;
+			while (true) {
+				g.fillRect(x, y, 1, 1);
+				if (e < 0) {
+					e = e - inc1;
+				} else {
+					y = y - 1;
+					e = e + inc2;
+				}
+				x = x + 1;
+				if (x > x1) {
+					break;
+				} else {
+					continue;
+					
+				}
+			}//while
+		} else if ((x0 > x1) && (y1 > y0)){
+			x = x1;
+			while (true) {
+				g.fillRect(x, y, 1, 1);
+				if (e < 0) {
+					e = e + inc1;
+				} else {
+					y = y + 1;
+					e = e - inc2;
+				}
+				x = x + 1;
+				if (x > x0) {
+					break;
+				} else {
+					continue;
+				}
+			}//while
+		} else {
+			x = x1;
+			y = y1;
+			while (true) {
+				g.fillRect(x, y, 1, 1);
+				if (e < 0) {
+					e = e - inc1;
+				} else {
+					y = y - 1;
+					e = e - inc2;
+				}
+				x = x + 1;
+				if (x > x0) {
+					break;
+				} else {
+					continue;
+				}
+			}//while
+		}
 	}//Bresenham1
 	
-	public static void Bresenham2(int x0, int x1, int y0, int y1) {
-		
-		
-	}
+	public static void Bresenham2(int x0, int x1, int y0, int y1, Graphics g) {
+		int e, deltaY, deltaX, inc1, inc2, x, y;
+		deltaY = y1 - y0;
+		deltaX = x1 - x0;
+		e = (2*deltaY) - deltaX;
+		inc1 = 2*deltaY;
+		inc2 = 2*(deltaY-deltaX);
+		x = x0;
+		y = y0;
+		if ((x1 > x0) && (y1 > y0)) { 
+			while (true) {
+				g.fillRect(x, y, 1, 1);
+				if (e < 0) {
+					e = e + inc1;
+				} else {
+					y = y + 1;
+					e = e + inc2;
+				}
+				x = x + 1;
+				if (x > x1) {
+					break;
+				} else {
+					continue;
+				}
+			}//while
+		} else if((x1 > x0) && (y0 > y1)) {
+			y=y0;
+			while (true) {
+				g.fillRect(x, y, 1, 1);
+				System.out.println("E: " + e + " inc1: "+ inc1 + " inc2: " + inc2);
+				if (e < 0) {
+					e = e - inc1;
+				} else {
+					y = y - 1;
+					e = e + inc2;
+				}
+				x = x + 1;
+				if (x > x1) {
+					break;
+				} else {
+					continue;
+					
+				}
+			}//while
+		} else if ((x0 > x1) && (y1 > y0)){
+			x = x1;
+			while (true) {
+				g.fillRect(x, y, 1, 1);
+				System.out.println("E: " + e + " inc1: "+ inc1 + " inc2: " + inc2);
+				if (e < 0) {
+					e = e + inc1;
+				} else {
+					y = y + 1;
+					e = e - inc2;
+				}
+				x = x + 1;
+				if (x > x0) {
+					break;
+				} else {
+					continue;
+				}
+			}//while
+		} else {
+			x = x1;
+			y = y1;
+			while (true) {
+				g.fillRect(x, y, 1, 1);
+				System.out.println("E: " + e + " inc1: "+ inc1 + " inc2: " + inc2);
+				if (e < 0) {
+					e = e - inc1;
+				} else {
+					y = y - 1;
+					e = e - inc2;
+				}
+				x = x + 1;
+				if (x > x0) {
+					break;
+				} else {
+					continue;
+				}
+			}//while
+		}
+	}//Bresenhams2
 }
